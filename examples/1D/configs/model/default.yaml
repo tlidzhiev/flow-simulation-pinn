@@ -1,0 +1,5 @@
+_target_: pinns.models.vanilla.VanillaPINN
+layers: [2, 64, 64, 64, 64, 5]
+activation:
+  _target_: torch.nn.Tanh
+output_names: ['p', 'sw', 'so', 'uw', 'uo']

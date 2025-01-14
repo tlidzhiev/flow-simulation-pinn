@@ -1,0 +1,14 @@
+loss_data:
+  _target_: losses.data.DataLoss
+  kappa: 10.0
+
+loss_darcy:
+  _target_: losses.darcy.DarcyLoss
+  alpha_wat: 2.0
+  alpha_oil: 4.0
+  mu_water: 1.0
+  mu_oil: 3.0
+
+loss_conservation:
+  _target_: losses.strong_conservation.StrongConservationLoss
+  phi: 0.1

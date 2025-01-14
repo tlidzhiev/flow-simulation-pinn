@@ -1,0 +1,5 @@
+_target_: pinns.trainers.data.DataDrivenTrainer
+config:
+  num_epochs: 20_000
+  save_period: 2500
+  checkpoint_dir: examples/1D/logs
