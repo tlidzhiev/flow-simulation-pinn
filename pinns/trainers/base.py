@@ -39,13 +39,15 @@ class BaseTrainer:
             train_result = self._train_epoch(train_dataset)
             eval_result = self._eval_epoch(val_dataset)
 
-            self.logger.add_scalars({**train_result, **eval_result})
-
             if self.lr_scheduler is not None:
+                current_lr = self.lr_scheduler.get_last_lr()[0]
                 self.lr_scheduler.step()
 
+            self.logger.add_scalars({**train_result, **eval_result, **{'lr': current_lr}})
             if epoch % self.save_period == 0:
                 self._save_checkpoint(epoch)
+
+        self.logger.finish()
 
     def _train_epoch(self, train_dataset) -> Dict[str, float]:
         raise NotImplementedError('Subclass must implement _train_epoch method')

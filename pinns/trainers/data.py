@@ -23,7 +23,11 @@ class DataDrivenTrainer(BaseTrainer):
         sim_output = self.model(t=sim_data.t, x=sim_data.x)
         sim_loss = self.criterion['loss_data'](output=sim_output, target=sim_data.target)
 
-        loss: torch.Tensor = ic_loss + bc_loss + sim_loss
+        loss: torch.Tensor = (
+            self.trainer_config['ic_weight'] * ic_loss
+            + self.trainer_config['bc_weight'] * bc_loss
+            + self.trainer_config['sim_weight'] * sim_loss
+        )
         loss.backward()
 
         self._clip_grad_norm()
