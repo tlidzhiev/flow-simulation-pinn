@@ -71,7 +71,7 @@ def sample_simulation_data(
     mesh = domain.generate_collocation_data(shape)
     t, x = mesh[:, 0].reshape(-1, 1), mesh[:, 1].reshape(-1, 1)
 
-    p, dp_dx, sw, so, uw, uo = compute_solution_vec(t=t.flatten(), x=x.flatten())
+    p, dp_dx, sw, so, uw, uo = compute_solution_vec(t=t.flatten(), x=x.flatten(), nx=shape[0])
     target = {name: arr.reshape(-1, 1) for name, arr in zip(output_names, [p, sw, so, uw, uo])}
     return {'t': t, 'x': x, 'target': target}
 
@@ -116,7 +116,7 @@ def sample_train_data(cfg: ListConfig) -> Dict[str, Any]:
 def sample_test_data(cfg: ListConfig) -> Dict[str, Any]:
     x = np.linspace(cfg.x_domain[0], cfg.x_domain[1], cfg.shape[1])
     t = np.full_like(x, cfg.t_point)
-    p, dp_dx, sw, so, uw, uo = compute_solution_vec(t=t, x=x)
+    p, dp_dx, sw, so, uw, uo = compute_solution_vec(t=t, x=x, nx=cfg.shape[1])
     target = {name: arr.reshape(-1, 1) for name, arr in zip(cfg.output_names, [p, dp_dx, sw, so, uw, uo])}
     return {'simulation_data': {'t': t.reshape(-1, 1), 'x': x.reshape(-1, 1), 'target': target}}
 
