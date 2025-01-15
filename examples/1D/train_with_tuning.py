@@ -36,6 +36,18 @@ def objective(trial: Trial, cfg: DictConfig) -> float:
     cfg['trainer']['config']['ic_weight'] = trial.suggest_float('ic_weight', 1.0e-2, 10.0, log=True)
     cfg['trainer']['config']['bc_weight'] = trial.suggest_float('bc_weight', 1.0e-2, 10.0, log=True)
     cfg['trainer']['config']['sim_weight'] = trial.suggest_float('sim_weight', 1.0e-2, 10.0, log=True)
+
+    if cfg['trainer']['config']['darcy_weight'] is not None:
+        cfg['trainer']['config']['darcy_weight'] = trial.suggest_float('darcy_weight', 1.0e-2, 10.0, log=True)
+
+    if cfg['trainer']['config']['conservation_weight'] is not None:
+        cfg['trainer']['config']['conservation_weight'] = trial.suggest_float(
+            'conservation_weight',
+            1.0e-2,
+            10.0,
+            log=True,
+        )
+
     cfg['optimizer']['lr'] = trial.suggest_float('lr', 1.0e-5, 1.0, log=True)
     print(f'Config:\n{OmegaConf.to_yaml(cfg)}')
 
@@ -55,7 +67,8 @@ def objective(trial: Trial, cfg: DictConfig) -> float:
     )
 
     trainer.fit(train_dataset, test_dataset)
-    return logger.metrics_history['eval_loss_data'][-1]
+    metric = (logger.metrics_history['eval_loss_data'][-1] + logger.metrics_history['train_loss_total'][-1]) / 2
+    return metric
 
 
 @hydra.main(version_base='1.3', config_path='configs', config_name='config.yaml')

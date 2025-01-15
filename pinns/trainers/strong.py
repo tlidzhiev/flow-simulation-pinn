@@ -27,7 +27,13 @@ class StrongTrainer(BaseTrainer):
         darcy_loss = self.criterion['loss_darcy'](t=pde_data.t, x=pde_data.x, output=pde_output)
         conservation_loss = self.criterion['loss_conservation'](t=pde_data.t, x=pde_data.x, output=pde_output)
 
-        loss: torch.Tensor = ic_loss + bc_loss + sim_loss + darcy_loss + conservation_loss
+        loss: torch.Tensor = (
+            self.trainer_config['ic_weight'] * ic_loss
+            + self.trainer_config['bc_weight'] * bc_loss
+            + self.trainer_config['sim_weight'] * sim_loss
+            + self.trainer_config['darcy_weight'] * darcy_loss
+            + self.trainer_config['conservation_weight'] * conservation_loss
+        )
         loss.backward()
 
         self._clip_grad_norm()

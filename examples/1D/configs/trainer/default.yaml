@@ -6,3 +6,5 @@ config:
   ic_weight: 1.0
   bc_weight: 1.0
   sim_weight: 1.0
+  darcy_weight: null
+  conservation_weight: null
