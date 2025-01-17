@@ -1,4 +1,4 @@
-from typing import Callable, Dict
+from typing import Callable, Dict, Optional
 
 import torch
 import torch.nn as nn
@@ -18,9 +18,9 @@ class BaseTrainer:
         model: nn.Module,
         criterion: Dict[str, Callable],
         optimizer: Optimizer,
-        lr_scheduler: LRScheduler,
         logger: Logger,
         config: DictConfig,
+        lr_scheduler: Optional[LRScheduler] = None,
     ):
         self.model = model
         self.criterion = criterion
@@ -42,6 +42,8 @@ class BaseTrainer:
             if self.lr_scheduler is not None:
                 current_lr = self.lr_scheduler.get_last_lr()[0]
                 self.lr_scheduler.step()
+            else:
+                current_lr = self.optimizer.param_groups[0]['lr']
 
             self.logger.add_scalars({**train_result, **eval_result, **{'lr': current_lr}})
             if epoch % self.save_period == 0:
