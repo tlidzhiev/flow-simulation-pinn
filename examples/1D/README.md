@@ -2,23 +2,36 @@
 
 Consider the physics flow simulation of two liquids (oil and water) in porous environment, which is described by the following equations:
 
-Conservation law:
+Conservation law: (differential form)
 
 $$
-\begin{dcases}
-\dfrac{\partial}{\partial t} (\phi s_w \rho_w) + \sum\limits_{i = 1}^n \dfrac{\partial}{\partial x_i} (\rho_w u_{w, i}) = 0\\
-%
-\dfrac{\partial}{\partial t} (\phi s_o \rho_o) + \sum\limits_{i = 1}^n \dfrac{\partial}{\partial x_i} (\rho_o u_{o, i}) = 0\\
-\end{dcases}
+\begin{cases}
+\displaystyle \dfrac{\partial (\phi s_w \rho_w)}{\partial t} + \dfrac{\partial (\rho_w u_w)}{\partial \mathbf{x}} = 0 \\
+\\
+\displaystyle \dfrac{\partial (\phi s_o \rho_o)}{\partial t} + \dfrac{\partial (\rho_w u_w)}{\partial \mathbf{x}} = 0 \\
+\end{cases}
+$$
+
+Conservation law: (integral form)
+
+$$
+\begin{cases}
+\displaystyle \int\limits_{x_0}^{x_1} \left[ \phi s_w(\tau_1, \mathbf{x}) \rho_w(\tau_1, \mathbf{x}) - \phi s_w(\tau_0, \mathbf{x}) \rho_w(\tau_0, \mathbf{x}) \right] d\mathbf{x} \\
+\quad + \int\limits_{\tau_0}^{\tau_1} \left[ \rho_w(t, x_1) u_w(t, x_1) - \rho_w(t, x_0) u_w(t, x_0) \right] dt = 0 \\
+\\
+\displaystyle \int\limits_{x_0}^{x_1} \left[ \phi s_o(\tau_1, \mathbf{x}) \rho_o(\tau_1, \mathbf{x}) - \phi s_o(\tau_0, \mathbf{x}) \rho_o(\tau_0, \mathbf{x}) \right] d\mathbf{x} \\
+\quad + \int\limits_{\tau_0}^{\tau_1} \left[ \rho_o(t, x_1) u_o(t, x_1) - \rho_o(t, x_0) u_o(t, x_0) \right] dt = 0
+\end{cases}
 $$
 
 Darcy's law:
 
 $$
-\begin{dcases}
-u_w = - \dfrac{k(\mathbf{x}) k_{r, w}(s_w)}{\mu_w} \nabla_{\mathbf{x}} p(t, \mathbf{x})\\
-u_o = - \dfrac{k(\mathbf{x}) k_{r, o}(s_o)}{\mu_o} \nabla_{\mathbf{x}}  p(t, \mathbf{x})\\
-\end{dcases}
+\begin{cases}
+\displaystyle u_w = - \dfrac{k(\mathbf{x}) \, k_{r,w}(s_w)}{\mu_w} \dfrac{\partial p}{\partial \mathbf{x}} \\
+\\
+u_o = - \dfrac{k(\mathbf{x}) \, k_{r,o}(s_o)}{\mu_o} \dfrac{\partial p}{\partial \mathbf{x}}\\
+\end{cases}
 $$
 
 
