@@ -1,7 +1,0 @@
-loss_data:
-  _target_: pinns.losses.one_dim.data.DataLoss
-  kappa: 10.0
-
-loss_darcy: null
-
-loss_conservation: null
